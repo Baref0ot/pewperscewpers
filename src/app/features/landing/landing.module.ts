@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PublicNavbarComponent } from './components/public-navbar/public-navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SignupModalComponent } from './components/signup-modal/signup-modal.component';
+import { LandingComponent } from './components/landing/landing.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -10,10 +12,14 @@ import { SignupModalComponent } from './components/signup-modal/signup-modal.com
   declarations: [
     PublicNavbarComponent,
     FooterComponent,
-    SignupModalComponent
+    SignupModalComponent,
+    LandingComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule.forChild([
+      {path: '', component: LandingComponent}
+    ])
   ]
 })
 export class LandingModule { }

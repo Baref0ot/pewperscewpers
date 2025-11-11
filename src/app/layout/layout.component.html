@@ -1,327 +1,100 @@
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { AppSettings, User, Notification, Account } from "@/entities/all";
-import PublicNavbar from "./components/landing/PublicNavbar";
-
-const allNavigationItems = {
-  main: [
-    { title: "Dashboard", url: createPageUrl("Dashboard"), icon: Home },
-    { title: "Customers", url: createPageUrl("Customers"), icon: Users },
-    { title: "Workers", url: createPageUrl("Workers"), icon: UserCheck },
-    { title: "Appointments", url: createPageUrl("Appointments"), icon: Calendar },
-    { title: "Services", url: createPageUrl("Services"), icon: Briefcase },
-    { title: "Billing", url: createPageUrl("Billing"), icon: DollarSign },
-  ],
-  portals: [
-    { title: "Customer Portal", url: createPageUrl("CustomerPortal"), icon: Dog },
-    { title: "Worker Portal", url: createPageUrl("WorkerPortal"), icon: MapPin },
-    { title: "Messages", url: createPageUrl("Chat"), icon: MessageCircle },
-  ],
-  admin: [
-    { title: "User Management", url: createPageUrl("UserManagement"), icon: UserCog },
-    { title: "Reviews", url: createPageUrl("Reviews"), icon: Star },
-    { title: "Settings", url: createPageUrl("Settings"), icon: Settings },
-  ],
-};
-
-
-const getFilteredNavItems = (role) => {
-    if (role === 'admin') return allNavigationItems;
-    if (role === 'customer') return { main: [], admin: [], portals: allNavigationItems.portals.filter(p => p.title !== 'Worker Portal') };
-    if (role === 'worker') return { main: [], admin: [], portals: allNavigationItems.portals.filter(p => p.title !== 'Customer Portal') };
-    return { main: [], portals: [], admin: [] };
-};
-
-export default function Layout({ children, currentPageName }) {
-  const location = useLocation();
-  const [currentAccount, setCurrentAccount] = useState(null);
-  const [appSettings, setAppSettings] = useState(null);
-  const [unreadCount, setUnreadCount] = useState(0);
-
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        const platformUser = await User.me().catch(() => null);
-        if (!platformUser) {
-          setCurrentAccount(null);
-          setAppSettings(null);
-          setUnreadCount(0);
-          return;
-        }
-        
-        const [accountData, settingsData] = await Promise.all([
-            Account.filter({ email: platformUser.email }).then(res => res[0]).catch(() => null),
-            AppSettings.list().then(res => res[0]).catch(() => null)
-        ]);
-
-        setCurrentAccount(accountData);
-        setAppSettings(settingsData);
-
-        if (accountData) {
-          const unreadNotifs = await Notification.filter({ user_id: accountData.id, is_read: false });
-          setUnreadCount(unreadNotifs.length);
-        } else {
-            setUnreadCount(0);
-        }
-      } catch (error) {
-        console.error("Failed to fetch account/settings:", error);
-        setCurrentAccount(null);
-        setAppSettings(null);
-        setUnreadCount(0);
-      }
-    };
-
-    fetchInitialData();
-  }, [location.pathname]);
-
-  const { main: navigationItems, portals: portalItems, admin: adminItems } = getFilteredNavItems(currentAccount?.role);
-  
-  const themeStyles = appSettings ? `
-    :root {
-      --theme-primary: ${appSettings.theme_color_primary || '#0d9488'};
-      --theme-secondary: ${appSettings.theme_color_secondary || '#2563eb'};
-    }
-    
-    .gradient-primary {
-      background: linear-gradient(to right, var(--theme-primary), var(--theme-secondary));
-    }
-    
-    .bg-primary {
-      background-color: var(--theme-primary);
-    }
-    
-    .text-primary {
-      color: var(--theme-primary);
-    }
-    
-    .border-primary {
-      border-color: var(--theme-primary);
-    }
-    
-    .hero-banner {
-      background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
-    }
-    
-    .btn-primary {
-      background-color: var(--theme-primary);
-      border-color: var(--theme-primary);
-    }
-    
-    .btn-primary:hover {
-      background-color: var(--theme-secondary);
-      border-color: var(--theme-secondary);
-    }
-  ` : '';
-
-  const isPublicPage = ['Landing', 'LegalPage', 'ServiceJourney'].includes(currentPageName);
-
-  if (isPublicPage) {
-    return (
-      <>
-        <style>{themeStyles}</style>
-        { /* No PublicNavbar on ServiceJourney page as it has its own header */ }
-        {currentPageName !== 'ServiceJourney' && <PublicNavbar appSettings={appSettings} />}
-        <main>{children}</main>
-      </>
-    );
-  }
-
-  const handleLogout = async () => {
-    await User.logout();
-    window.location.href = createPageUrl('Landing');
-  };
-
-  return (
-    <SidebarProvider>
-       <style>{themeStyles}</style>
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-emerald-50 via-white to-blue-50">
-        <Sidebar className="border-r border-emerald-100 bg-white/80 backdrop-blur-sm">
-          <SidebarHeader className="border-b border-emerald-100 p-6">
-            <div className="flex items-center gap-3">
-              <div 
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg gradient-primary"
-              >
-                {appSettings?.logo_url ? (
-                  <img src={appSettings.logo_url} alt="Company Logo" className="w-6 h-6 object-contain" />
-                ) : (
-                  <Dog className="w-6 h-6 text-white" />
-                )}
-              </div>
-              <div>
-                <h2 className="font-bold text-gray-900 text-lg">{appSettings?.company_name || "PawClean Pro"}</h2>
-                <p className="text-xs font-medium text-primary">Professional Pet Waste Management</p>
-              </div>
-            </div>
-          </SidebarHeader>
-
-           <SidebarContent className="p-3">
-            {navigationItems.length > 0 && (
-              <SidebarGroup>
-                <SidebarGroupLabel className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 py-2">
-                  Main Menu
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {navigationItems.map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton
-                          asChild
-                          className={`hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-200 rounded-xl mb-1 ${
-                            location.pathname === item.url ? 'gradient-primary text-white shadow-lg' : ''
-                          }`}
-                        >
-                          <Link to={item.url} className="flex items-center gap-3 px-4 py-3">
-                            <item.icon className="w-5 h-5" />
-                            <span className="font-medium">{item.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            )}
-            {portalItems.length > 0 && (
-              <SidebarGroup>
-                <SidebarGroupLabel>Portals & Comms</SidebarGroupLabel>
-                 <SidebarGroupContent>
-                  <SidebarMenu>
-                    {portalItems.map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton
-                          asChild
-                          className={`hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-200 rounded-xl mb-1 ${
-                            location.pathname === item.url ? 'gradient-primary text-white shadow-lg' : ''
-                          }`}
-                        >
-                          <Link to={item.url} className="flex items-center gap-3 px-4 py-3">
-                            <item.icon className="w-5 h-5" />
-                            <span className="font-medium">{item.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            )}
-            {adminItems.length > 0 && (
-              <SidebarGroup>
-                <SidebarGroupLabel>Administration</SidebarGroupLabel>
-                 <SidebarGroupContent>
-                  <SidebarMenu>
-                    {adminItems.map((item) => (
-                      <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton
-                          asChild
-                          className={`hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-200 rounded-xl mb-1 ${
-                            location.pathname === item.url ? 'gradient-primary text-white shadow-lg' : ''
-                          }`}
-                        >
-                          <Link to={item.url} className="flex items-center gap-3 px-4 py-3">
-                            <item.icon className="w-5 h-5" />
-                            <span className="font-medium">{item.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            )}
-          </SidebarContent>
-
-          <SidebarFooter className="border-t border-emerald-100 p-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-full justify-start gap-3 p-3">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center gradient-primary">
-                    <span className="text-white font-semibold text-sm">{currentAccount?.full_name?.[0] || 'U'}</span>
-                  </div>
-                  <div className="flex-1 text-left">
-                    <p className="font-medium text-gray-900 text-sm">{currentAccount?.full_name || 'Guest'}</p>
-                    <p className="text-xs text-gray-500 capitalize">{currentAccount?.role || 'Guest'}</p>
-                  </div>
-                  <ChevronDown className="w-4 h-4 text-gray-400" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem asChild>
-                  <Link to={createPageUrl("Settings")}>
-                    <Settings className="w-4 h-4 mr-2" />
-                    Settings
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to={createPageUrl("Notifications")}>
-                    <Bell className="w-4 h-4 mr-2" />
-                    Notifications
-                    {unreadCount > 0 && (
-                      <Badge variant="secondary" className="ml-auto bg-red-500 text-white hover:bg-red-600">
-                        {unreadCount}
-                      </Badge>
-                    )}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:text-red-600 focus:bg-red-50">
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </SidebarFooter>
-        </Sidebar>
-
-        <main className="flex-1 flex flex-col overflow-hidden">
-          <header className="bg-white/80 backdrop-blur-sm border-b border-emerald-100 px-6 py-4 md:hidden">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <SidebarTrigger className="hover:bg-emerald-50 p-2 rounded-lg" />
-                <h1 className="text-xl font-bold text-gray-900">{appSettings?.company_name || "PawClean Pro"}</h1>
-              </div>
-              <Link to={createPageUrl('Notifications')}>
-                <Button variant="ghost" size="icon" className="relative">
-                  <Bell className="w-5 h-5" />
-                  {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 text-xs bg-red-500 text-white rounded-full flex items-center justify-center">
-                      {unreadCount}
-                    </span>
-                  )}
-                </Button>
-              </Link>
-            </div>
-          </header>
-
-          <div className="flex-1 overflow-auto">
-            <div className="p-6">
-              {children}
-            </div>
-          </div>
-        </main>
+<mat-sidenav-container class="app-container">
+  <!-- Sidebar -->
+  <mat-sidenav #drawer mode="side" opened class="sidebar">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <img *ngIf="appSettings?.logo_url" [src]="appSettings.logo_url" alt="Company Logo" class="logo" />
+        <div *ngIf="!appSettings?.logo_url" class="logo-placeholder">
+          <lucide-icon name="dog"></lucide-icon>
+        </div>
+        <div>
+          <h2>{{ appSettings?.company_name || 'PawClean Pro' }}</h2>
+          <p class="subtitle">Professional Pet Waste Management</p>
+        </div>
       </div>
-    </SidebarProvider>
-  );
-}
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <mat-nav-list>
+      <!-- Main Menu -->
+      <div *ngIf="navigationItems.length > 0">
+        <p class="group-label">Main Menu</p>
+        <ng-container *ngFor="let item of navigationItems">
+          <a mat-list-item [routerLink]="item.url" [ngClass]="{'active': currentPath === item.url}">
+            <lucide-icon [name]="item.icon"></lucide-icon>
+            <span>{{ item.title }}</span>
+          </a>
+        </ng-container>
+      </div>
+
+      <!-- Portals -->
+      <div *ngIf="portalItems.length > 0">
+        <p class="group-label">Portals & Comms</p>
+        <ng-container *ngFor="let item of portalItems">
+          <a mat-list-item [routerLink]="item.url" [ngClass]="{'active': currentPath === item.url}">
+            <lucide-icon [name]="item.icon"></lucide-icon>
+            <span>{{ item.title }}</span>
+          </a>
+        </ng-container>
+      </div>
+
+      <!-- Admin -->
+      <div *ngIf="adminItems.length > 0">
+        <p class="group-label">Administration</p>
+        <ng-container *ngFor="let item of adminItems">
+          <a mat-list-item [routerLink]="item.url" [ngClass]="{'active': currentPath === item.url}">
+            <lucide-icon [name]="item.icon"></lucide-icon>
+            <span>{{ item.title }}</span>
+          </a>
+        </ng-container>
+      </div>
+    </mat-nav-list>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <button mat-button [matMenuTriggerFor]="accountMenu" class="account-btn">
+        <div class="avatar">{{ currentAccount?.full_name?.[0] || 'U' }}</div>
+        <div class="account-info">
+          <p>{{ currentAccount?.full_name || 'Guest' }}</p>
+          <p class="role">{{ currentAccount?.role || 'Admin' }}</p>
+        </div>
+        <lucide-icon name="chevron-down"></lucide-icon>
+      </button>
+
+      <mat-menu #accountMenu="matMenu">
+        <button mat-menu-item [routerLink]="createPageUrl('Settings')">
+          <lucide-icon name="settings"></lucide-icon> Settings
+        </button>
+        <button mat-menu-item [routerLink]="createPageUrl('Notifications')">
+          <lucide-icon name="bell"></lucide-icon> Notifications
+          <span *ngIf="unreadCount > 0" matBadge="{{ unreadCount }}" matBadgeColor="warn"></span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="handleLogout()" class="logout">
+          <lucide-icon name="log-out"></lucide-icon> Logout
+        </button>
+      </mat-menu>
+    </div>
+  </mat-sidenav>
+
+  <!-- Main Content -->
+  <mat-sidenav-content>
+    <!-- Mobile Header -->
+    <mat-toolbar class="mobile-header">
+      <button mat-icon-button (click)="drawer.toggle()">
+        <lucide-icon name="menu"></lucide-icon>
+      </button>
+      <span>{{ appSettings?.company_name || 'PawClean Pro' }}</span>
+      <button mat-icon-button [routerLink]="createPageUrl('Notifications')" class="notification-btn">
+        <lucide-icon name="bell"></lucide-icon>
+        <span *ngIf="unreadCount > 0" matBadge="{{ unreadCount }}" matBadgeColor="warn"></span>
+      </button>
+    </mat-toolbar>
+
+    <!-- Page Content -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

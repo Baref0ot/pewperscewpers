@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WorkerFormComponent } from './component/worker-form/worker-form.component';
+import { WorkerFormComponent } from './components/worker-form/worker-form.component';
 
 
 

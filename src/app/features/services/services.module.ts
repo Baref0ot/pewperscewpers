@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ServicesFormComponent } from './componenets/services-form/services-form.component';
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    ServicesFormComponent
+  ],
   imports: [
     CommonModule
   ]

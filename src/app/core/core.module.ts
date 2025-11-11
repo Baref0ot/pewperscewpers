@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatListModule,
     MatBadgeModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
     LucideAngularModule.pick({ Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut })
   ],
   exports: [

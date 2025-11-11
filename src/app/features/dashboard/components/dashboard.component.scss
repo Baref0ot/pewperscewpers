@@ -1,0 +1,82 @@
+.dashboard-container {
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .subtitle {
+    color: #6b7280;
+  }
+
+  .date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .stat-card {
+    text-align: center;
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin: 8px 0;
+    }
+    .trend {
+      color: #10b981;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.section-card {
+  margin-bottom: 24px;
+
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+
+    .item-title {
+      font-weight: 500;
+    }
+    .item-subtitle {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+    .status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      &.blue { background-color: #bfdbfe; color: #1e40af; }
+      &.yellow { background-color: #fef9c3; color: #a16207; }
+      &.green { background-color: #bbf7d0; color: #166534; }
+      &.red { background-color: #fecaca; color: #991b1b; }
+      &.active { background-color: #bbf7d0; color: #166534; }
+      &.inactive { background-color: #e5e7eb; color: #374151; }
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    color: #9ca3af;
+    padding: 16px;
+  }
+}

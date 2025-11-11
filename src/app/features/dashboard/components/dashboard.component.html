@@ -1,4 +1,77 @@
-    <p>dashboard works!</p>
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <h1 class="title">Dashboard</h1>
+      <p class="subtitle">Welcome back! Here's what's happening with your business.</p>
+    </div>
+    <div class="date">
+      <mat-icon color="primary">pets</mat-icon>
+      <span>{{ today | date:'fullDate' }}</span>
+    </div>
+  </div>
 
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Loading dashboard data...</p>
+  </div>
 
+  <!-- Stats Grid -->
+  <div *ngIf="!isLoading" class="stats-grid">
+    <mat-card class="stat-card" *ngFor="let stat of stats">
+      <mat-card-header>
+        <mat-card-title>{{ stat.title }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stat-value">
+          {{ stat.title.includes('Revenue') ? ('$' + stat.value.toLocaleString()) : stat.value }}
+        </div>
+        <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
+        <p *ngIf="stat.trend" class="trend">{{ stat.trend }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
+  <!-- Recent Appointments -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title><mat-icon>schedule</mat-icon> Recent Appointments</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="recentAppointments.length > 0; else noAppointments">
+        <div *ngFor="let apt of recentAppointments" class="list-item">
+          <div>
+            <p class="item-title">{{ apt.scheduled_date | date:'MMM d, yyyy' }}</p>
+            <p class="item-subtitle">{{ apt.scheduled_time }} • {{ apt.service_type }}</p>
+          </div>
+          <span class="status" [ngClass]="getStatusColor(apt.status)">{{ apt.status }}</span>
+        </div>
+      </div>
+      <ng-template #noAppointments>
+        <p class="empty-state">No appointments scheduled</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Recent Customers -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title><mat-icon>group</mat-icon> Recent Customers</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="recentCustomers.length > 0; else noCustomers">
+        <div *ngFor="let customer of recentCustomers" class="list-item">
+          <div>
+            <p class="item-title">{{ customer.first_name }} {{ customer.last_name }}</p>
+            <p class="item-subtitle"><mat-icon>location_on</mat-icon> {{ customer.city }}, {{ customer.state }}</p>
+          </div>
+          <span class="status" [ngClass]="customer.status === 'active' ? 'active' : 'inactive'">{{ customer.status }}</span>
+        </div>
+      </div>
+      <ng-template #noCustomers>
+        <p class="empty-state">No customers yet</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

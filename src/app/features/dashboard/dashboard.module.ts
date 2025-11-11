@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './components/dashboard.component';
 import { RouterModule } from '@angular/router';
-//import { CoreModule } from "src/app/core/core.module";
+import { MatIconModule } from "@angular/material/icon";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatCardModule } from '@angular/material/card';
+
 
 
 
@@ -13,7 +16,10 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild([{ path: '', component: DashboardComponent }])
+    RouterModule.forChild([{ path: '', component: DashboardComponent }]),
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatCardModule
 ]
 })
 export class DashboardModule { }

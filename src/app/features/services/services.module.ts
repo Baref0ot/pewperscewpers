@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServicesFormComponent } from './componenets/services-form/services-form.component';
+import { ServicesFormComponent } from './components/services-form/services-form.component';
 
 
 

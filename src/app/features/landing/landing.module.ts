@@ -5,6 +5,15 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SignupModalComponent } from './components/signup-modal/signup-modal.component';
 import { LandingComponent } from './components/landing/landing.component';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from "@angular/material/icon";
+import { MatCardModule } from "@angular/material/card";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+
 
 
 
@@ -18,8 +27,16 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule.forChild([
-      {path: '', component: LandingComponent}
-    ])
-  ]
+        { path: '', component: LandingComponent }
+    ]),
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    FormsModule
+]
 })
 export class LandingModule { }

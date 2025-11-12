@@ -1,3 +1,138 @@
-<app-public-navbar></app-public-navbar>
-<p>landing works!</p>
-<app-footer></app-footer>
+<div class="landing-container">
+  <!-- Hero Section -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <h1>A Clean Yard is a Happy Yard.</h1>
+      <p>
+        We provide reliable, professional pet waste removal services so you can enjoy your yard, worry-free.
+      </p>
+      <div class="hero-actions">
+        <button mat-raised-button color="primary" routerLink="/quote">Get Started Today</button>
+        <button mat-stroked-button color="primary" routerLink="/services">View Services</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="features-grid">
+      <div class="feature-item">
+        <mat-icon class="feature-icon">verified_user</mat-icon>
+        <h3>Reliable Service</h3>
+        <p>Our team is always on time, ensuring your yard is consistently clean.</p>
+      </div>
+      <div class="feature-item">
+        <mat-icon class="feature-icon">grade</mat-icon>
+        <h3>Satisfaction Guaranteed</h3>
+        <p>We stand by our work. If you're not happy, we'll make it right.</p>
+      </div>
+      <div class="feature-item">
+        <mat-icon class="feature-icon">chat</mat-icon>
+        <h3>Easy Communication</h3>
+        <p>Manage your service and communicate with us easily through your portal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services-section">
+    <div class="section-header">
+      <h2>Our Services</h2>
+      <p>Tailored to fit your needs.</p>
+    </div>
+    <div class="services-grid">
+      <mat-card *ngFor="let service of services" class="service-card">
+        <img [src]="service.image_url || defaultImage" alt="{{ service.name }}" class="service-image" />
+        <mat-card-content>
+          <h3>{{ service.name }}</h3>
+          <p>{{ service.description }}</p>
+          <div class="price">\${{ service.price }}</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Quote Section -->
+  <section class="quote-section">
+    <div class="section-header">
+      <h2>Get Your Free Quote</h2>
+      <p>Instant, easy, and no obligation.</p>
+    </div>
+    <div class="quote-grid">
+      <form (ngSubmit)="handleSeeJourney()" class="quote-form">
+        <mat-form-field appearance="outline">
+          <mat-label>How many dogs do you have?</mat-label>
+          <mat-select [(value)]="numDogs">
+            <mat-option *ngFor="let i of dogOptions" [value]="i">{{ i }} dog{{ i > 1 ? 's' : '' }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>How often?</mat-label>
+          <mat-select [(value)]="frequency">
+            <mat-option value="one-time">One-Time Cleanup</mat-option>
+            <mat-option value="weekly">Weekly Service</mat-option>
+            <mat-option value="bi-weekly">Every 2 Weeks</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div *ngIf="addonServices.length > 0" class="addon-services">
+          <h4>Additional Services</h4>
+          <div *ngFor="let addon of addonServices" class="addon-item">
+            <mat-checkbox [(ngModel)]="addon.selected">{{ addon.name }} (+\${{ addon.price }})</mat-checkbox>
+            <p>{{ addon.description }}</p>
+          </div>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Your Email Address</mat-label>
+          <input matInput type="email" [(ngModel)]="email" name="email" required />
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Preparing...' : 'See Your Service Day Story!' }}
+        </button>
+      </form>
+
+      <div class="quote-summary">
+        <h3>Your Estimated Quote</h3>
+        <div *ngIf="quote; else noQuote">
+          <p class="quote-amount">\${{ quote.amount }}</p>
+          <p>{{ quote.period }}</p>
+          <div class="quote-breakdown">
+            <p>Base Price: \${{ quote.breakdown.base }}</p>
+            <p>{{ quote.breakdown.numDogs }} Dog(s): \${{ quote.breakdown.dogs }}</p>
+            <p *ngIf="quote.breakdown.services > 0">Add-on Services: \${{ quote.breakdown.services }}</p>
+            <p class="total">Total: \${{ quote.amount }}</p>
+          </div>
+        </div>
+        <ng-template #noQuote>
+          <p>Fill out the form to see your price.</p>
+        </ng-template>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section *ngIf="reviews.length > 0" class="reviews-section">
+    <div class="section-header">
+      <h2>What Our Customers Say</h2>
+    </div>
+    <div class="reviews-grid">
+      <mat-card *ngFor="let review of reviews" class="review-card">
+        <mat-card-content>
+          <div class="stars">
+            <mat-icon *ngFor="let i of [1,2,3,4,5]" [ngClass]="{'filled': i <= review.rating}">star</mat-icon>
+          </div>
+          <p>"{{ review.review_text }}"</p>
+          <div class="reviewer">
+            <img [src]="review.image_url || avatarUrl(review.customer_name)" alt="{{ review.customer_name }}" />
+            <span>{{ review.customer_name }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <app-footer></app-footer>
+</div>

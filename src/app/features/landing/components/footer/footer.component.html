@@ -1,1 +1,31 @@
-<p>footer works!</p>
+<footer class="footer-container mat-elevation-z2">
+  <div class="footer-top">
+    <div class="logo-section">
+      <img *ngIf="appSettings?.logo_url" [src]="appSettings.logo_url" alt="Company Logo" class="logo" />
+      <div *ngIf="!appSettings?.logo_url" class="logo-placeholder">
+        <lucide-icon name="dog"></lucide-icon>
+      </div>
+      <div class="company-info">
+        <h3>{{ appSettings?.company_name || 'PawClean Pro' }}</h3>
+        <p>Your yard's best friend.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-links">
+    <div class="quick-links">
+      <h5>Quick Links</h5>
+      <a mat-button routerLink="/services">Services</a>
+      <a mat-button routerLink="/quote">Get a Quote</a>
+    </div>
+    <div class="legal-links">
+      <h5>Legal</h5>
+      <a mat-button routerLink="/privacy-policy">Privacy Policy</a>
+      <a mat-button routerLink="/terms-of-service">Terms of Service</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© {{ currentYear }} {{ appSettings?.company_name || 'PawClean Pro' }}. All rights reserved.</p>
+  </div>
+</footer>

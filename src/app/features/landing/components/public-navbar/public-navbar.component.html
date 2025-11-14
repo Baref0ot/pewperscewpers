@@ -1,1 +1,36 @@
-<p>public-navbar works!</p>
+<header class="navbar-container mat-elevation-z2">
+  <div class="navbar-content">
+    <!-- Logo -->
+    <div class="logo">
+      <span class="logo-icon">🐾</span>
+      <span class="logo-text">PawClean Pro</span>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav">
+      <a class="nav-link" href="#services">Services</a>
+      <a class="nav-link" href="#quote">Pricing</a>
+      <a class="nav-link" href="#reviews">Reviews</a>
+    </nav>
+
+    <!-- Desktop Buttons -->
+    <div class="desktop-actions">
+      <button mat-button (click)="handleLogin()">Login</button>
+      <button mat-raised-button color="primary" (click)="handleSignUp()">Sign Up</button>
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button mat-icon-button class="mobile-toggle" (click)="toggleMenu()">
+      <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" *ngIf="isMenuOpen">
+    <a class="nav-link" href="#services">Services</a>
+    <a class="nav-link" href="#quote">Pricing</a>
+    <a class="nav-link" href="#reviews">Reviews</a>
+    <button mat-stroked-button (click)="handleLogin()" class="full-width">Login</button>
+    <button mat-raised-button color="primary" (click)="handleSignUp()" class="full-width">Sign Up</button>
+  </div>
+</header>

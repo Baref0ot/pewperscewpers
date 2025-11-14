@@ -1,0 +1,45 @@
+@use '@angular/material' as mat;
+
+// 1. Define your custom green palette
+$custom-green-palette: (
+  50:  #e6f9e0,
+  100: #c8f2b8,
+  200: #a8eb8f,
+  300: #89e466,
+  400: #6bde3d,
+  500: #4dd714,
+  600: #36c900,
+  700: #1fbd00, // Your main color
+  800: #1aa600,
+  900: #158f00,
+  contrast: (
+    50:  rgba(0, 0, 0, 0.87),
+    100: rgba(0, 0, 0, 0.87),
+    200: rgba(0, 0, 0, 0.87),
+    300: rgba(0, 0, 0, 0.87),
+    400: rgba(0, 0, 0, 0.87),
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white
+  )
+);
+
+// 2. Define palettes for primary, accent, warn
+$my-primary: mat.define-palette($custom-green-palette, 700, 500, 900);
+$my-accent: mat.define-palette(mat.$teal-palette, 500, 300, 700);
+$my-warn: mat.define-palette(mat.$red-palette);
+
+// 3. Create a light theme
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn
+  ),
+  typography: mat.define-typography-config(),
+));
+
+// 4. Apply theme to all Material components
+@include mat.all-component-themes($my-theme);

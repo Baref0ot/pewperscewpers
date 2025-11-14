@@ -17,8 +17,16 @@ export class LayoutComponent implements OnInit {
 
   constructor(private router: Router) {}
 
+  isPublicPage = false;
+
+
   ngOnInit() {
+    const publicPages = ['', 'legalpage', 'servicejourney'];
+    const currentRoute = this.router.url.toLowerCase();
+    this.isPublicPage = publicPages.some(page => currentRoute.includes(page));
+
     this.currentPath = this.router.url;
+
     // Mock data for now
     this.appSettings = { company_name: 'PawClean Pro', logo_url: null };
     this.currentAccount = { full_name: 'John Doe', role: 'admin' };

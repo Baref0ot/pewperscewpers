@@ -1,0 +1,87 @@
+.footer-container {
+  background-color: #1f2937; // dark gray
+  color: #fff;
+  padding: 3rem 1.5rem; // py-12 px-6
+  border-top: 1px solid #374151; // subtle top border
+
+  .footer-top {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr); // 3 columns on md+
+    }
+  }
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .logo-placeholder {
+      width: 32px;
+      height: 32px;
+      background-color: #fff;
+      border-radius: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      lucide-icon {
+        width: 20px;
+        height: 20px;
+        color: #1f2937;
+      }
+    }
+
+    .company-info {
+      h3 {
+        font-weight: 700;
+        font-size: 1.125rem;
+        margin: 0;
+      }
+
+      p {
+        font-size: 0.875rem;
+        color: #9ca3af;
+      }
+    }
+  }
+
+  .link-group {
+    h5 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    a {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        color: #d1d5db;
+      }
+    }
+  }
+
+  .footer-bottom {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #374151;
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-align: center;
+  }
+}

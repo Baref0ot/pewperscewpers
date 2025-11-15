@@ -6,7 +6,8 @@ import { SignupModalComponent } from './components/signup-modal/signup-modal.com
 import { LandingComponent } from './components/landing/landing.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -19,13 +20,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild([
-        { path: '', component: LandingComponent }
+    RouterModule.forChild([{ path: '', component: LandingComponent }
     ]),
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
+    HttpClientModule
 ],
   exports: [
     PublicNavbarComponent,
+    LandingComponent,
     FooterComponent
   ]
 })

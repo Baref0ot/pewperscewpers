@@ -9,7 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { LucideAngularModule, Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut } from 'lucide-angular';
+import { LucideAngularModule, Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut, Shield, Sparkles } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -32,7 +32,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatBadgeModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    LucideAngularModule.pick({ Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut }),
+    LucideAngularModule.pick({ Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut, Shield, Sparkles }),
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,

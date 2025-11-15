@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -19,11 +19,32 @@ export class LayoutComponent implements OnInit {
 
   isPublicPage = false;
 
+  
+private checkPublicPage(url: string) {
+  const publicPages = ['', 'legalpage', 'servicejourney'];
+  const currentRoute = url.toLowerCase();
+  this.isPublicPage = publicPages.some(page => currentRoute.includes(page));
+}
+
 
   ngOnInit() {
+
+    this.checkPublicPage(this.router.url);
+    
+    this.router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          this.checkPublicPage(event.url);
+        }
+      });
+
+
     const publicPages = ['', 'legalpage', 'servicejourney'];
     const currentRoute = this.router.url.toLowerCase();
-    this.isPublicPage = publicPages.some(page => currentRoute.includes(page));
+    this.isPublicPage = currentRoute === '' || publicPages.some(page => currentRoute.includes(page));
+
+
+    console.log("isPublicPage: " + this.isPublicPage);
+
 
     this.currentPath = this.router.url;
 

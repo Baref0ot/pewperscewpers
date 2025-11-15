@@ -1,87 +1,114 @@
-.footer-container {
-  background-color: #1f2937; // dark gray
-  color: #fff;
-  padding: 3rem 1.5rem; // py-12 px-6
-  border-top: 1px solid #374151; // subtle top border
+/* --- Tailwind color equivalents used by your React component --- */
+$gray-800: #1f2937; // bg-gray-800
+$gray-700: #374151; // border-gray-700
+$gray-500: #6b7280; // text-gray-500
+$gray-400: #9ca3af; // text-gray-400
+$white:     #ffffff;
 
-  .footer-top {
-    max-width: 1280px;
-    margin: 0 auto;
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: 1fr;
+:host {
+  display: block;
+}
 
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(3, 1fr); // 3 columns on md+
-    }
+/* <footer class="bg-gray-800 text-white"> */
+.footer {
+  background-color: $gray-800;
+  color: $white;
+}
+
+/* .container mx-auto px-6 py-12 */
+.container {
+  max-width: 72rem;       /* Tailwind's container usually caps at lg/xl; adjust as needed */
+  margin-inline: auto;
+  padding-inline: 1.5rem; /* px-6 */
+  padding-block: 3rem;    /* py-12 */
+}
+
+/* .grid md:grid-cols-3 gap-8 */
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem; /* gap-8 */
+
+  @media (min-width: 768px) { /* md breakpoint */
+    grid-template-columns: repeat(3, 1fr);
   }
+}
 
-  .logo-section {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+/* .flex items-center gap-2 mb-4 */
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;   /* gap-2 */
+  margin-bottom: 1rem; /* mb-4 */
+}
 
-    .logo {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-    }
+/* .w-8 h-8 bg-white rounded-lg flex items-center justify-center */
+.logo-box {
+  width: 2rem;           /* w-8 */
+  height: 2rem;          /* h-8 */
+  background-color: $white;
+  border-radius: 0.5rem; /* rounded-lg */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .logo-placeholder {
-      width: 32px;
-      height: 32px;
-      background-color: #fff;
-      border-radius: 0.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+/* The inner icon / image, matching w-5 h-5 */
+.logo-img,
+.logo-svg {
+  width: 1.25rem;  /* w-5 */
+  height: 1.25rem; /* h-5 */
+  object-fit: contain;
+  color: var(--theme-primary, #22c55e); /* mirrors inline style in React */
+  fill: currentColor;  /* apply color to SVG shape */
+}
 
-      lucide-icon {
-        width: 20px;
-        height: 20px;
-        color: #1f2937;
-      }
-    }
+/* .font-bold text-lg */
+.brand-name {
+  font-weight: 700;
+  font-size: 1.125rem; /* text-lg */
+}
 
-    .company-info {
-      h3 {
-        font-weight: 700;
-        font-size: 1.125rem;
-        margin: 0;
-      }
+/* .text-gray-400 */
+.text-gray-400 {
+  color: $gray-400;
+}
 
-      p {
-        font-size: 0.875rem;
-        color: #9ca3af;
-      }
-    }
+/* h4.font-semibold mb-4 */
+.col-title {
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+/* .space-y-2 -> gap between list items */
+.link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li + li {
+    margin-top: 0.5rem; /* space-y-2 */
   }
+}
 
-  .link-group {
-    h5 {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
+/* anchor hover -> hover:text-gray-300 (we'll approximate with higher contrast) */
+.link {
+  color: $white;
+  text-decoration: none;
+  transition: color 0.15s ease-in-out;
 
-    a {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #fff;
-      text-decoration: none;
-
-      &:hover {
-        color: #d1d5db;
-      }
-    }
+  &:hover,
+  &:focus-visible {
+    color: #d1d5db; /* ~text-gray-300 */
+    outline: none;
   }
+}
 
-  .footer-bottom {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid #374151;
-    font-size: 0.875rem;
-    color: #6b7280;
-    text-align: center;
-  }
+/* .mt-8 pt-8 border-t border-gray-700 text-center text-gray-500 */
+.footer-bottom {
+  margin-top: 2rem;            /* mt-8 */
+  padding-top: 2rem;           /* pt-8 */
+  border-top: 1px solid $gray-700; /* border-t border-gray-700 */
+  text-align: center;
+  color: $gray-500;            /* text-gray-500 */
 }

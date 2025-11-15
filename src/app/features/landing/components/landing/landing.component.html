@@ -1,137 +1,226 @@
+<!-- Theme is driven by CSS vars set from appSettings in TS -->
+<div class="landing bg-white text-gray-800" *ngIf="!isLoading; else loadingTpl">
 
-<div class="landing-container">
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section class="hero-banner">
-    <div class="hero-content">
-      <h1>A Clean Yard is a Happy Yard.</h1>
-      <p>
+    <div class="container">
+      <h1 class="headline">A Clean Yard is a Happy Yard.</h1>
+      <p class="subhead">
         We provide reliable, professional pet waste removal services so you can enjoy your yard, worry-free.
       </p>
-      <div class="hero-actions">
-        <button mat-raised-button color="primary" routerLink="/quote">Get Started Today</button>
-        <button mat-stroked-button color="primary" routerLink="/services">View Services</button>
-      </div>
-    </div>
-  </section>
 
-  <!-- Features Section -->
-  <section class="features-section">
-    <div class="features-grid">
-      <div class="feature-item">
-        <mat-icon class="feature-icon">verified_user</mat-icon>
-        <h3>Reliable Service</h3>
-        <p>Our team is always on time, ensuring your yard is consistently clean.</p>
-      </div>
-      <div class="feature-item">
-        <mat-icon class="feature-icon">grade</mat-icon>
-        <h3>Satisfaction Guaranteed</h3>
-        <p>We stand by our work. If you're not happy, we'll make it right.</p>
-      </div>
-      <div class="feature-item">
-        <mat-icon class="feature-icon">chat</mat-icon>
-        <h3>Easy Communication</h3>
-        <p>Manage your service and communicate with us easily through your portal.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Services Section -->
-  <section class="services-section">
-    <div class="section-header">
-      <h2>Our Services</h2>
-      <p>Tailored to fit your needs.</p>
-    </div>
-    <div class="services-grid">
-      <mat-card *ngFor="let service of services" class="service-card">
-        <img [src]="service.image_url || defaultImage" alt="{{ service.name }}" class="service-image" />
-        <mat-card-content>
-          <h3>{{ service.name }}</h3>
-          <p>{{ service.description }}</p>
-          <div class="price">\${{ service.price }}</div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </section>
-
-  <!-- Quote Section -->
-  <section class="quote-section">
-    <div class="section-header">
-      <h2>Get Your Free Quote</h2>
-      <p>Instant, easy, and no obligation.</p>
-    </div>
-    <div class="quote-grid">
-      <form (ngSubmit)="handleSeeJourney()" class="quote-form">
-        <mat-form-field appearance="outline">
-          <mat-label>How many dogs do you have?</mat-label>
-          <mat-select [(value)]="numDogs">
-            <mat-option *ngFor="let i of dogOptions" [value]="i">{{ i }} dog{{ i > 1 ? 's' : '' }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-          <mat-label>How often?</mat-label>
-          <mat-select [(value)]="frequency">
-            <mat-option value="one-time">One-Time Cleanup</mat-option>
-            <mat-option value="weekly">Weekly Service</mat-option>
-            <mat-option value="bi-weekly">Every 2 Weeks</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <div *ngIf="addonServices.length > 0" class="addon-services">
-          <h4>Additional Services</h4>
-          <div *ngFor="let addon of addonServices" class="addon-item">
-            <mat-checkbox [(ngModel)]="addon.selected">{{ addon.name }} (+\${{ addon.price }})</mat-checkbox>
-            <p>{{ addon.description }}</p>
-          </div>
-        </div>
-
-        <mat-form-field appearance="outline">
-          <mat-label>Your Email Address</mat-label>
-          <input matInput type="email" [(ngModel)]="email" name="email" required />
-        </mat-form-field>
-
-        <button mat-raised-button color="primary" type="submit" [disabled]="isSubmitting">
-          {{ isSubmitting ? 'Preparing...' : 'See Your Service Day Story!' }}
+      <div class="cta-row">
+        <button mat-raised-button class="mat-flat-button btn-action"
+                [routerLink]="[]" fragment="quote">
+          Get Started Today
         </button>
-      </form>
 
-      <div class="quote-summary">
-        <h3>Your Estimated Quote</h3>
-        <div *ngIf="quote; else noQuote">
-          <p class="quote-amount">\${{ quote.amount }}</p>
-          <p>{{ quote.period }}</p>
-          <div class="quote-breakdown">
-            <p>Base Price: \${{ quote.breakdown.base }}</p>
-            <p>{{ quote.breakdown.numDogs }} Dog(s): \${{ quote.breakdown.dogs }}</p>
-            <p *ngIf="quote.breakdown.services > 0">Add-on Services: \${{ quote.breakdown.services }}</p>
-            <p class="total">Total: \${{ quote.amount }}</p>
-          </div>
-        </div>
-        <ng-template #noQuote>
-          <p>Fill out the form to see your price.</p>
-        </ng-template>
+        <button mat-stroked-button class="mat-outlined-button btn-outline-primary"
+                [routerLink]="[]" fragment="services">
+          View Services
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials Section -->
-  <section *ngIf="reviews.length > 0" class="reviews-section">
-    <div class="section-header">
-      <h2>What Our Customers Say</h2>
+  <!-- Features -->
+  <section class="section features section section--muted">
+    <div class="container">
+      <div class="features_grid">
+        <div class="feature">
+          <lucide-icon name="Shield" class="feature_icon text-primary"></lucide-icon>
+          <h3 class="feature_title">Reliable Service</h3>
+          <p class="feature_text">Our team is always on time, ensuring your yard is consistently clean.</p>
+        </div>
+
+        <div class="feature">
+          <lucide-icon name="Sparkles" class="feature_icon text-primary"></lucide-icon>
+          <h3 class="feature-title">Satisfaction Guaranteed</h3>
+          <p class="feature-text">We stand by our work. If you're not happy, we'll make it right.</p>
+        </div>
+
+        <div class="feature">
+          <lucide-icon name="MessageCircle" class="feature_icon text-primary"></lucide-icon>
+          <h3 class="feature-title">Easy Communication</h3>
+          <p class="feature-text">Manage your service and communicate with us easily through your portal.</p>
+        </div>
+      </div>
     </div>
-    <div class="reviews-grid">
-      <mat-card *ngFor="let review of reviews" class="review-card">
-        <mat-card-content>
-          <div class="stars">
-            <mat-icon *ngFor="let i of [1,2,3,4,5]" [ngClass]="{'filled': i <= review.rating}">star</mat-icon>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="section services">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="section_title">Our Services</h2>
+        <p class="section_subtitle">Tailored to fit your needs.</p>
+      </div>
+
+      <div class="services_grid">
+        <mat-card class="add mat-card service-card"
+                  *ngFor="let service of services;">
+          <div class="aspect-video">
+            <img [src]="service.image_url ? service.image_url : 'https://images.unsplash.com/photo-1517849845537-4d257902454a?q=80&w=400&auto=format&fit=crop'"
+                 [alt]="service.name" loading="lazy" />
           </div>
-          <p>"{{ review.review_text }}"</p>
-          <div class="reviewer">
-            <img [src]="review.image_url || avatarUrl(review.customer_name)" alt="{{ review.customer_name }}" />
-            <span>{{ review.customer_name }}</span>
+
+          <mat-card-content class="service-card_body">
+            <h3 class="service-card_title">{{ service.name }}</h3>
+            <p class="service-card_text">{{ service.description }}</p>
+            <div class="service-card_price">
+              ${{ service.price | number:'1.2-2' }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  <section id="quote" class="section quote section--muted">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="section_title">Get Your Free Quote</h2>
+        <p class="section_subtitle">Instant, easy, and no obligation.</p>
+      </div>
+
+      <div class="twocol">
+
+        <!-- Form -->
+        <form [formGroup]="form" (ngSubmit)="onSeeJourney()" class="quote_form">
+
+          <!-- Num Dogs -->
+          <div class="form-field">
+            <label class="quote_label">How many dogs do you have?</label>
+            <mat-form-field appearance="outline">
+              <mat-select  formControlName="numDogs">
+                <mat-option *ngFor="let n of [1,2,3,4,5,6,7,8]" [value]="n">
+                  {{ n }} dog{{ n > 1 ? 's' : '' }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> 
           </div>
-        </mat-card-content>
-      </mat-card>
+
+          <!-- How Often -->
+          
+            <mat-label class="quote_label">How often?</mat-label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="frequency">
+                <mat-option value="one-time">One-Time Cleanup</mat-option>
+                <mat-option value="weekly">Weekly Service</mat-option>
+                <mat-option value="bi-weekly">Every 2 Weeks</mat-option>
+              </mat-select>
+            </mat-form-field>
+          
+
+          <!-- Addon Services -->
+          <div class="form-field" *ngIf="addonServices.length > 0">
+            <mat-label class="quote_label">Additional Services</mat-label>
+            <div class="addon-list">
+              <div class="addon-item" [class.is-selected]="selectedServiceIds.has(svc.id)" *ngFor="let svc of addonServices;" (click)="toggleAddon(svc.id)">
+                <div class="addon-row">
+                  <mat-checkbox
+                    [checked]="selectedServiceIds.has(svc.id)"
+                    (change)="toggleAddon(svc.id);">
+                  </mat-checkbox>
+
+                  <div class="addon-info">
+                    <label class="addon-item_name">{{ svc.name }}</label>
+                    <p class="addon-item_desc">{{ svc.description }}</p>
+                    <p class="addon-item_price">+${{ svc.price | number:'1.2-2' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          
+            <mat-label for="email" class="quote_label">Your Email Address</mat-label>
+            <mat-form-field appearance="outline">
+              <input matInput id="email" type="email" placeholder="you@example.com" formControlName="email" required />
+            </mat-form-field>
+          
+
+        </form>
+
+        <!-- Summary -->
+        <div class="quote_summary">
+          <h3 class="summary_title">Your Estimated Quote</h3>
+
+          <ng-container *ngIf="quote; else noQuote">
+            <p class="summary_amount">
+              ${{ quote.amount | number:'1.2-2' }}
+            </p>
+            <p class="summary_period">{{ quote.period }}</p>
+
+            <div class="summary_breakdown">
+              <h4 class="breakdown-title">Quote Breakdown:</h4>
+              <div class="rows">
+                <div class="row">
+                  <span>Base Price:</span>
+                  <span>${{ quote.breakdown.base | number:'1.2-2' }}</span>
+                </div>
+                <div class="row">
+                  <span>{{ quote.breakdown.numDogs }} Dog{{ quote.breakdown.numDogs! > 1 ? 's' : '' }}:</span>
+                  <span>${{ quote.breakdown.dogs | number:'1.2-2' }}</span>
+                </div>
+                <div class="row" *ngIf="quote.breakdown.services! > 0">
+                  <span>Add-on Services:</span>
+                  <span>${{ quote.breakdown.services | number:'1.2-2' }}</span>
+                </div>
+                <div class=" row row--total">
+                  <span>Total:</span>
+                  <span>${{ quote.amount | number:'1.2-2' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <button mat-flat-button class="summary_cta btn-primary"
+                    (click)="onSeeJourney()" [disabled]="isSubmitting">
+              {{ isSubmitting ? 'Preparing...' : 'See Your Service Day Story!' }}
+            </button>
+          </ng-container>
+
+          <ng-template #noQuote>
+            <p class="text-center text-gray-500">Fill out the form to see your price.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="reviews" class="section reviews" *ngIf="reviews.length > 0">
+    <div class="container">
+      <div class="section_title">
+        <h2 class="h2">What Our Customers Say</h2>
+      </div>
+
+      <div class="reviews_grid">
+        <mat-card class="mat-card review-card" *ngFor="let r of reviews;">
+          <mat-card-content class="review-card_body">
+            <div class="review-card_stars">
+              <mat-icon *ngFor="let _ of stars; let i = index" [ngClass]="i < r.rating ? 'star-on' : 'star-off'">
+                star
+              </mat-icon>
+            </div>
+
+            <p class="review-card_text">"{{ r.comment }}"</p>
+
+            <div class="review-card_person">
+              <img class="avatar"
+                   [src]=" r.image_url || ('https://ui-avatars.com/api/?name=' + r.customer_name)"
+                   [alt]="r.customer_name" />
+              <span class="name">{{ r.customer_name }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </section>
 </div>
+
+<ng-template #loadingTpl>
+  <div class="container py-16 text-center">Loading…</div>
+</ng-template>

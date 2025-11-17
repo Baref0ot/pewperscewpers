@@ -1,57 +1,34 @@
-//@use "angular-material-css-vars" as mat;
-//@include mat.init-material-css-vars();
-//
-//
-//// 1. Define your custom green palette
-//$custom-green-palette: (
-//  50:  #e6f9e0,
-//  100: #c8f2b8,
-//  200: #a8eb8f,
-//  300: #89e466,
-//  400: #6bde3d,
-//  500: #4dd714,
-//  600: #36c900,
-//  700: #1fbd00, // primary color
-//  800: #1aa600,
-//  900: #158f00,
-//  contrast: (
-//    50:  rgba(0, 0, 0, 0.87),
-//    100: rgba(0, 0, 0, 0.87),
-//    200: rgba(0, 0, 0, 0.87),
-//    300: rgba(0, 0, 0, 0.87),
-//    400: rgba(0, 0, 0, 0.87),
-//    500: white,
-//    600: white,
-//    700: white,
-//    800: white,
-//    900: white
-//  )
-//);
-//
-//// 2. Create theme using the NEW API
-//$my-theme: mat.define-theme((
-//  color: (
-//    primary: mat.define-palette($custom-green-palette, 700, 500, 900),
-//    accent: mat.define-palette(mat.$teal-palette, 500, 300, 700),
-//    warn: mat.define-palette(mat.$red-palette),
-//  ),
-//  typography: mat.define-typography-config(),
-//));
-//
-//// 3. Apply component styles (still needed for Material components)
-//@include mat.all-component-themes($my-theme);
-//
-//// 4. Generate CSS variables globally
-//:root {
-//  @include mat.theme($my-theme);
-//}
 
+@use '@angular/material' as mat;
+@include mat.core();
+@import '@angular/cdk/overlay-prebuilt.css';
+
+/* --- Define Material palettes (sample; adjust to your brand) --- */
+$primary: mat.define-palette(mat.$green-palette, 600); /* roughly #16a34a */
+$accent:  mat.define-palette(mat.$light-green-palette, A200);
+$warn:    mat.define-palette(mat.$red-palette);
+
+/* --- Compose a light theme object --- */
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $primary,
+    accent:  $accent,
+    warn:    $warn,
+  ),
+  // Optional:
+  // typography: mat.define-typography-config(),
+  // density: 0,
+));
+
+/* --- Apply the theme to all Material components globally --- */
+@include mat.all-component-themes($my-theme);
+
+/* Your CSS variables (keep them) */
 :root {
-  
   --theme-primary: #1fbd00;
-  --theme-secondary: #4dd714;
+  --theme-secondary: #1fbd00;
   --app-light-accent-color: #4dd714;
   --action-item: white;
   --action-item-accent: #f1f1f1;
-
 }
+

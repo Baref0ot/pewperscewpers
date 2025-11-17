@@ -1,5 +1,5 @@
 <!-- Theme is driven by CSS vars set from appSettings in TS -->
-<div class="landing bg-white text-gray-800" *ngIf="!isLoading; else loadingTpl">
+<div class="bg-white text-gray-800" *ngIf="!isLoading; else loadingTpl">
 
   <!-- Hero -->
   <section class="hero-banner">
@@ -89,21 +89,21 @@
         <!-- Form -->
         <form [formGroup]="form" (ngSubmit)="onSeeJourney()" class="quote_form">
 
-          <!-- Num Dogs -->
-          <div class="form-field">
-            <label class="quote_label">How many dogs do you have?</label>
+          <!-- Num Dogs -->   
+           <div class="quote_label">
+            <mat-label>How many dogs do you have?</mat-label>
             <mat-form-field appearance="outline">
-              <mat-select  formControlName="numDogs">
+              <mat-select formControlName="numDogs">
                 <mat-option *ngFor="let n of [1,2,3,4,5,6,7,8]" [value]="n">
                   {{ n }} dog{{ n > 1 ? 's' : '' }}
                 </mat-option>
               </mat-select>
             </mat-form-field> 
-          </div>
+         </div>
 
           <!-- How Often -->
-          
-            <mat-label class="quote_label">How often?</mat-label>
+          <div class="quote_label">
+            <mat-label>How often?</mat-label>
             <mat-form-field appearance="outline">
               <mat-select formControlName="frequency">
                 <mat-option value="one-time">One-Time Cleanup</mat-option>
@@ -111,6 +111,8 @@
                 <mat-option value="bi-weekly">Every 2 Weeks</mat-option>
               </mat-select>
             </mat-form-field>
+          </div>
+
           
 
           <!-- Addon Services -->
@@ -135,12 +137,12 @@
           </div>
 
           <!-- Email -->
-          
-            <mat-label for="email" class="quote_label">Your Email Address</mat-label>
+          <div class="quote_label">
+            <mat-label for="email">Your Email Address</mat-label>
             <mat-form-field appearance="outline">
               <input matInput id="email" type="email" placeholder="you@example.com" formControlName="email" required />
             </mat-form-field>
-          
+          </div>
 
         </form>
 
@@ -185,8 +187,9 @@
           <ng-template #noQuote>
             <p class="text-center text-gray-500">Fill out the form to see your price.</p>
           </ng-template>
-        </div>
-      </div>
+        </div> <!-- quote summary -->
+
+      </div> <!-- twocol -->
     </div>
   </section>
 
@@ -219,6 +222,7 @@
       </div>
     </div>
   </section>
+
 </div>
 
 <ng-template #loadingTpl>

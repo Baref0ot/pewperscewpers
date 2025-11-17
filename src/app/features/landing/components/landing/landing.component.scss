@@ -180,7 +180,7 @@ button.btn-action{
   .service-card_title { font-size: 1.25rem; font-weight: 700; margin-bottom: .5rem; }
   .service-card_text {
     color: #4b5563; margin-bottom: 1rem;
-    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; /* line-clamp-3 */
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-clamp: 3; /* line-clamp-3 */
   }
   .service-card_price { font-size: 1.5rem; font-weight: 700; color: var(--theme-primary); }
 }

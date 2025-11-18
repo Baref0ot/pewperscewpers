@@ -35,8 +35,8 @@ export class LandingService {
       company_name: 'PawClean Pro',
       theme_color_primary: '#4f46e5',  // indigo-ish
       theme_color_secondary: '#06b6d4', // cyan-ish
-      quote_base_price: 49,
-      quote_price_per_dog: 8
+      quote_base_price: 20,
+      quote_price_per_dog: 5
     };
     return Promise.resolve(settings);
   }

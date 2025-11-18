@@ -12,7 +12,7 @@ export class CustomerService {
     const reviews: ReviewItem[] = [
       { id: 'r1', customer_name: 'Alex P.', rating: 5, comment: 'Incredible attention to detail!', createdAt: new Date().toISOString() },
       { id: 'r2', customer_name: 'Jamie L.', rating: 4, comment: 'On time and very friendly.',     createdAt: new Date().toISOString() },
-      { id: 'r3', customer_name: 'Taylor S.', rating: 5, comment: 'My house has never looked better!', createdAt: new Date().toISOString() }
+      { id: 'r3', customer_name: 'Taylor S.', rating: 5, comment: 'My yard has never looked better!', createdAt: new Date().toISOString() }
     ];
     return Promise.resolve(reviews);
   }

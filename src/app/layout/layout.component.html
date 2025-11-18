@@ -25,6 +25,7 @@
 
     <!-- Sidebar Navigation -->
     <mat-nav-list>
+      
       <!-- Main Menu -->
       <div *ngIf="navigationItems.length > 0">
         <p class="group-label">Main Menu</p>
@@ -65,10 +66,10 @@
       </button>
 
       <mat-menu #accountMenu="matMenu">
-        <button mat-menu-item [routerLink]="createPageUrl('Settings')">
+        <button mat-menu-item [routerLink]=""> <!-- createPageUrl('Settings') -->
           <mat-icon>settings</mat-icon> Settings
         </button>
-        <button mat-menu-item [routerLink]="createPageUrl('Notifications')">
+        <button mat-menu-item [routerLink]=""> <!-- createPageUrl('Notifications') -->
           <mat-icon>notifications</mat-icon> Notifications
           <span *ngIf="unreadCount > 0" matBadge="{{ unreadCount }}" matBadgeColor="warn"></span>
         </button>
@@ -88,7 +89,7 @@
         <mat-icon>menu</mat-icon>
       </button>
       <span>{{ appSettings?.company_name || 'PawClean Pro' }}</span>
-      <button mat-icon-button [routerLink]="createPageUrl('Notifications')" class="notification-btn">
+      <button mat-icon-button [routerLink]="" class="notification-btn"> <!-- createPageUrl('Notifications') -->
         <mat-icon>notifications</mat-icon>
         <span *ngIf="unreadCount > 0" matBadge="{{ unreadCount }}" matBadgeColor="warn"></span>
       </button>

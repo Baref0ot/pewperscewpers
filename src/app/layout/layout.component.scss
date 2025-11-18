@@ -3,32 +3,46 @@
 }
 
 .sidebar {
-  width: 260px;
+  width: 325px;
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(8px);
-  border-right: 1px solid #d1fae5;
+  border-right: 1px solid  color-mix(in srgb, var(--theme-primary) 40%, transparent);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  justify-content: space-between;
+  padding: 0; 
+  box-sizing: border-box;
+  height: 100dvh;
 }
+
+
+/* Angular Material adds this inside the drawer; let it participate in flex */
+::ng-deep .mat-drawer-inner-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* critical so children can shrink instead of forcing overflow */
+}
+
 
 .sidebar-header {
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--theme-primary) 40%, transparent);
 
   .logo-container {
     width: 40px;
     height: 40px;
-    border-radius: 8px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to right, var(--theme-primary, #0d9488), var(--theme-secondary, #2563eb));
+    background: var(--theme-primary);
     img {
-      width: 24px;
-      height: 24px;
+      width: 40px;
+      height: 40px;
     }
     .logo-icon {
       color: white;
@@ -39,63 +53,163 @@
     font-weight: bold;
     font-size: 1.1rem;
     color: #111827;
+    margin: 0;
+    letter-spacing: .75px;
   }
 
   .subtitle {
-    font-size: 0.75rem;
-    color: var(--theme-primary, #0d9488);
+    font-size: .85rem;
+    font-weight: 400;
+    color: var(--theme-primary);
+    margin-top: 5px;
+    width: 90%;
   }
 }
 
 .group-label {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: .75rem;
+  font-weight: 700;
   color: #6b7280;
   text-transform: uppercase;
-  margin: 8px 16px;
+  margin: 18px 16px 8px;
+  letter-spacing: 0.04em;
 }
 
-.mat-list-item.active {
-  background: linear-gradient(to right, var(--theme-primary, #0d9488), var(--theme-secondary, #2563eb));
-  color: white;
-  border-radius: 8px;
+:host ::ng-deep mat-nav-list{
+  display: block;
+  margin: 0;
+  padding: 0 12px 0 12px;
 }
+
+
+/* Stack rows with small gaps */
+:host ::ng-deep mat-nav-list .mat-mdc-list-base {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Baseline row */
+::ng-deep a.mat-mdc-list-item.mdc-list-item {
+  width: 90%;               
+  height: 40px;
+  padding-inline: 12px;
+  border-radius: 15px;        
+  color: #111827;             
+  text-decoration: none;
+}
+
+a.mat-mdc-list-item.active {
+  --mdc-list-list-item-container-color: var(--theme-primary);
+  border-radius: 15px;
+  width: 90%;
+}
+
+
+/* Align icon + label; give them a little gap */
+::ng-deep a.mat-mdc-list-item.mdc-list-item .mdc-list-item__primary-text,
+ a.mat-mdc-list-item mat-icon,
+ a.mat-mdc-list-item lucide-icon{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Align icon + label; give them a little gap when active */
+::ng-deep a.mat-mdc-list-item.active .mdc-list-item__primary-text,
+ a.mat-mdc-list-item.active mat-icon,
+ a.mat-mdc-list-item.active lucide-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  fill: #fff;
+}
+
+
+/* Icon baseline (lucide or mat-icon) */
+::ng-deep a.mat-mdc-list-item.mdc-list-item lucide-icon,
+::ng-deep a.mat-mdc-list-item.mdc-list-item mat-icon {
+  color: #111827;   /* gray-500 for inactive */
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
 
 .sidebar-footer {
-  padding: 16px;
-  border-top: 1px solid #d1fae5;
+  margin-top: auto;
+  padding: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--theme-primary) 40%, transparent);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
+  
   .account-btn {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    text-align: left;
+    justify-content: center;
+    background: transparent;
+    border: 0;
 
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: linear-gradient(to right, var(--theme-primary, #0d9488), var(--theme-secondary, #2563eb));
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-    }
 
     .account-info {
-      flex: 1;
       p {
-        margin: 0;
+        margin-right: 0;
       }
-      .role {
-        font-size: 0.75rem;
-        color: #6b7280;
+      
+      .name {
+        font-weight: 700;
+        font-size: 14px;
+        color: #111827;
+      }
+      .role {       
+        font-size: .95rem;
+        color: #6b7280; 
+        margin-top: 0;
+        line-height: 1;
+
       }
     }
   }
+
+  .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--theme-primary);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin-left: 30px;
+      margin-right: 10px;
+    }
 }
+
+/* Caret or chevron area */
+.sidebar-footer  .caret {
+  margin-left: auto;
+  color: #7f8591;
+}
+
+
+
+::ng-deep .mat-mdc-menu-panel .mat-mdc-menu-item lucide-icon,
+ ::ng-deep .mat-mdc-menu-panel .mat-mdc-menu-item mat-icon{
+  //display: flex;
+  //align-items: center;
+  width: 100%;
+  //gap: 10px;
+  color: #292828;
+  fill: #fff;
+}
+
+::ng-deep .mat-mdc-menu-item:hover {
+  background-color: #f0f0f0;
+}
+
 
 .mobile-header {
   display: flex;
@@ -110,3 +224,4 @@
 .page-content {
   padding: 24px;
 }
+

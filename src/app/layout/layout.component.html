@@ -15,7 +15,7 @@
     <div class="sidebar-header">
       <div class="logo-container gradient-primary">
         <img *ngIf="appSettings?.logo_url" [src]="appSettings.logo_url" alt="Company Logo" class="logo" />
-        <mat-icon *ngIf="!appSettings?.logo_url" class="logo-icon">pets</mat-icon>
+        <lucide-icon *ngIf="!appSettings?.logo_url" name="dog" class="logo-icon"></lucide-icon>
       </div>
       <div>
         <h2>{{ appSettings?.company_name || 'PawClean Pro' }}</h2>
@@ -25,57 +25,57 @@
 
     <!-- Sidebar Navigation -->
     <mat-nav-list>
-      
+
       <!-- Main Menu -->
       <div *ngIf="navigationItems.length > 0">
         <p class="group-label">Main Menu</p>
-        <a mat-list-item *ngFor="let item of navigationItems" [routerLink]="item.url" [ngClass]="{'active': currentPath === item.url}">
-          <mat-icon>{{ item.icon }}</mat-icon>
-          <span>{{ item.title }}</span>
+        <a mat-list-item *ngFor="let item of navigationItems; trackBy: trackByUrl" [routerLink]="item.url" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <lucide-icon name="{{ item.icon }}"></lucide-icon> <mat-label>{{ item.title }}</mat-label>
         </a>
       </div>
 
       <!-- Portals -->
       <div *ngIf="portalItems.length > 0">
         <p class="group-label">Portals & Comms</p>
-        <a mat-list-item *ngFor="let item of portalItems" [routerLink]="item.url" [ngClass]="{'active': currentPath === item.url}">
-          <mat-icon>{{ item.icon }}</mat-icon>
-          <span>{{ item.title }}</span>
+        <a mat-list-item *ngFor="let item of portalItems; trackBy: trackByUrl" [routerLink]="item.url" [ngClass]="{'active': currentPath === item.url}">
+          <lucide-icon name="{{ item.icon }}"></lucide-icon> <mat-label>{{ item.title }}</mat-label>
         </a>
       </div>
 
       <!-- Admin -->
       <div *ngIf="adminItems.length > 0">
         <p class="group-label">Administration</p>
-        <a mat-list-item *ngFor="let item of adminItems" [routerLink]="item.url" [ngClass]="{'active': currentPath === item.url}">
-          <mat-icon>{{ item.icon }}</mat-icon>
-          <span>{{ item.title }}</span>
+        <a mat-list-item *ngFor="let item of adminItems; trackBy: trackByUrl" [routerLink]="item.url" [ngClass]="{'active': currentPath === item.url}">
+          <lucide-icon name="{{ item.icon }}"></lucide-icon> <mat-label>{{ item.title }}</mat-label>
         </a>
       </div>
     </mat-nav-list>
 
     <!-- Sidebar Footer -->
     <div class="sidebar-footer">
-      <button mat-button [matMenuTriggerFor]="accountMenu" class="account-btn">
-        <div class="avatar">{{ currentAccount?.full_name?.[0] || 'U' }}</div>
+      
+      
+      <div class="avatar">{{ currentAccount?.full_name?.[0] || 'U' }}</div>
+      <div  [matMenuTriggerFor]="accountMenu" class="account-btn">              
         <div class="account-info">
-          <p>{{ currentAccount?.full_name || 'Guest' }}</p>
+          <p class="name">{{ currentAccount?.full_name || 'Guest' }}</p>
           <p class="role">{{ currentAccount?.role || 'Guest' }}</p>
-        </div>
-        <mat-icon>expand_more</mat-icon>
-      </button>
+        </div>    
+      </div>
+      <lucide-icon class="caret" name="ChevronDown"></lucide-icon>
+      
 
-      <mat-menu #accountMenu="matMenu">
+      <mat-menu #accountMenu="matMenu" class="matMenu">
         <button mat-menu-item [routerLink]=""> <!-- createPageUrl('Settings') -->
-          <mat-icon>settings</mat-icon> Settings
+          <lucide-icon name="Settings"></lucide-icon> Settings
         </button>
         <button mat-menu-item [routerLink]=""> <!-- createPageUrl('Notifications') -->
-          <mat-icon>notifications</mat-icon> Notifications
+          <lucide-icon name="Bell"></lucide-icon> Notifications
           <span *ngIf="unreadCount > 0" matBadge="{{ unreadCount }}" matBadgeColor="warn"></span>
         </button>
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="handleLogout()" class="logout">
-          <mat-icon>logout</mat-icon> Logout
+          <lucide-icon name="LogOutIcon"></lucide-icon> Logout
         </button>
       </mat-menu>
     </div>
@@ -86,11 +86,11 @@
     <!-- Mobile Header -->
     <mat-toolbar class="mobile-header">
       <button mat-icon-button (click)="drawer.toggle()">
-        <mat-icon>menu</mat-icon>
+        <lucide-icon name="PanelLeftOpen"></lucide-icon>
       </button>
       <span>{{ appSettings?.company_name || 'PawClean Pro' }}</span>
       <button mat-icon-button [routerLink]="" class="notification-btn"> <!-- createPageUrl('Notifications') -->
-        <mat-icon>notifications</mat-icon>
+        <lucide-icon name="Bell"></lucide-icon>
         <span *ngIf="unreadCount > 0" matBadge="{{ unreadCount }}" matBadgeColor="warn"></span>
       </button>
     </mat-toolbar>

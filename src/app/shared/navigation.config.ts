@@ -1,6 +1,23 @@
-export const NAV_ITEMS = {
+export interface NavItem {
+
+  title: string;
+  url: string;
+  icon?: string;            
+  roles?: string[];         // optional: restrict by roles
+  public?: boolean;         // optional: explicitly mark public items
+  external?: boolean;       // optional: open in new tab
+}
+
+
+export interface NavConfig {
+  main: NavItem[];
+  portals: NavItem[];
+  admin: NavItem[];
+}
+
+export const NAV_ITEMS: NavConfig = {
   main: [
-    { title: 'Dashboard', url: '/dashboard', icon: 'home' },
+    { title: 'Dashboard', url: '/dashboard', icon: 'House' },
     { title: 'Customers', url: '/customers', icon: 'users' },
     { title: 'Workers', url: '/workers', icon: 'user-check' },
     { title: 'Appointments', url: '/appointments', icon: 'calendar' },

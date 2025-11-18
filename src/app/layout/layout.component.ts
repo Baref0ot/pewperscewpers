@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { NAV_ITEMS, NavItem } from '../shared/navigation.config';
 
 @Component({
   selector: 'app-layout',
@@ -11,6 +12,7 @@ export class LayoutComponent implements OnInit {
   appSettings: any = null;
   currentAccount: any = null;
   unreadCount = 0;
+
   navigationItems: any[] = [];
   portalItems: any[] = [];
   adminItems: any[] = [];
@@ -26,38 +28,29 @@ export class LayoutComponent implements OnInit {
     this.applyRouteFlags();
 
 //    // Mock data for now
-    this.appSettings = { company_name: 'PawClean Pro', logo_url: null };
-    this.currentAccount = { full_name: 'John Doe', role: 'admin' };
+    this.appSettings = { company_name: 'PewperScewpers', logo_url: null };
+    this.currentAccount = { full_name: 'Matthew Wright', role: 'admin' };
     this.unreadCount = 3;
-
-    this.navigationItems = [
-      { title: 'Dashboard', url: '/dashboard', icon: 'dashboard' },
-      { title: 'Customers', url: '/customers', icon: 'group' }
-   ];
-    this.portalItems = [
-      { title: 'Customer Portal', url: '/customer-portal', icon: 'pets' }
-    ];
-    this.adminItems = [
-      { title: 'Settings', url: '/settings', icon: 'settings' }
-    ];
- 
 
     // Recompute on each navigation end
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(() => this.applyRouteFlags());
-  }
 
+    // 2) Map config to your arrays (with optional filtering)
+    this.hydrateNavFromConfig();
 
-  /** Reads the deepest child route's data and sets flags */
+  } // end OnInit
+
+/** Reads the deepest child route's data and sets flags */
   private applyRouteFlags(): void {
     const deepest = this.getDeepestChild(this.route);
     this.isPublicPage = !!deepest.snapshot.data?.['public'];
     this.currentPath = this.router.url;
     console.log('isPublicPage:', this.isPublicPage);
-  }
-
-  
+    console.log('currentPath: ', this.currentPath);
+  }// end applyRouteFlags
+   
 /** Walk to the deepest child ActivatedRoute */
   private getDeepestChild(ar: ActivatedRoute): ActivatedRoute {
     let child = ar;
@@ -65,12 +58,38 @@ export class LayoutComponent implements OnInit {
       child = child.firstChild;
     }
     return child;
-  }
+  }// end getDeepestChild
 
 
   handleLogout() {
     console.log('Logging out...');
     this.router.navigate(['/landing']);
-  }
+  }// end handleLogout
+
+   
+/** Build nav arrays from config, with role/public filtering */
+  private hydrateNavFromConfig(): void {
+    const role = this.currentAccount?.role ?? 'Guest';
+
+    // If you want to hide everything on public pages except explicitly public items,
+    // keep a simple helper that allows all on protected pages:
+    const allowItem = (item: NavItem): boolean => {
+      if (this.isPublicPage) {
+        return !!item.public;   // only show items explicitly marked public
+      }
+      if (item.roles?.length) {
+        return item.roles.includes(role);
+      }
+      return true;
+    };
+
+    this.navigationItems = NAV_ITEMS.main.filter(allowItem);
+    this.portalItems     = NAV_ITEMS.portals.filter(allowItem);
+    this.adminItems      = NAV_ITEMS.admin.filter(allowItem);
+  }// end hydrateNavFromConfig
+
+  
+/** TrackBy for *ngFor performance */
+  trackByUrl = (_: number, item: NavItem) => item.url;
 
 }

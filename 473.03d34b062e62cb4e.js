@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpewperscewpers=self.webpackChunkpewperscewpers||[]).push([[473],{473:(c,e,s)=>{s.r(e),s.d(e,{CustomersModule:()=>r});var n=s(177),u=s(7705);let r=(()=>{class t{static{this.\u0275fac=function(a){return new(a||t)}}static{this.\u0275mod=u.$C({type:t})}static{this.\u0275inj=u.G2t({imports:[n.MD]})}}return t})()}}]);

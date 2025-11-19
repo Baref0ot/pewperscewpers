@@ -30,6 +30,10 @@
   background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
   color: #fff;
   padding-block: 5rem; /* py-20 */
+  height: 75dvh; /* full viewport height minus nav */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   @media (min-width: 768px) { /* md:py-32 */
     padding-block: 8rem;

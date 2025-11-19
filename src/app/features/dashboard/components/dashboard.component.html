@@ -107,7 +107,7 @@
         </div>
 
         <!-- Empty state (keep as-is) -->
-        <div class="list__empty">
+        <div *ngIf="recentAppointments.length < 1" class="list__empty">
           No appointments scheduled
         </div>
       </div>
@@ -135,7 +135,7 @@
           </div>
         </div>
 
-        <div class="list__empty">
+        <div *ngIf="recentCustomers.length < 1" class="list__empty">
           No customers yet
         </div>
       </div>

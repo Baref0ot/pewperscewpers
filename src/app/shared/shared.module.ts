@@ -9,13 +9,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { LucideAngularModule, Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut, Shield, Sparkles, LogOutIcon, PanelLeftOpen } from 'lucide-angular';
+import { LucideAngularModule, Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut, Shield, Sparkles, LogOutIcon, PanelLeftOpen,TrendingUp, Clock, CircleCheckBig, CircleAlert } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 
@@ -32,11 +33,12 @@ import { MatSelectModule } from '@angular/material/select';
     MatBadgeModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    LucideAngularModule.pick({ Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut, Shield, Sparkles, LogOutIcon, PanelLeftOpen }),
+    LucideAngularModule.pick({ Dog, House, Users, UserCheck, Calendar, Briefcase, DollarSign, MapPin, MessageCircle, UserCog, Star, Settings, ChevronDown, Bell, LogOut, Shield, Sparkles, LogOutIcon, PanelLeftOpen, TrendingUp, Clock, CircleCheckBig, CircleAlert }),
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatChipsModule,
     MatCheckboxModule,
     FormsModule
   ],
@@ -55,6 +57,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatChipsModule,
     MatCheckboxModule,
     FormsModule
   ]

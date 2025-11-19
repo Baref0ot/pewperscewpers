@@ -1,77 +1,178 @@
-<div class="dashboard-container">
-  <!-- Header -->
-  <div class="header">
-    <div>
-      <h1 class="title">Dashboard</h1>
-      <p class="subtitle">Welcome back! Here's what's happening with your business.</p>
+<section class="dashboard">
+
+  <!-- ===== Header ===== -->
+  <header class="dash-header">
+    <div class="dash-header__loading">
+      Loading dashboard data…
     </div>
-    <div class="date">
-      <mat-icon color="primary">pets</mat-icon>
-      <span>{{ today | date:'fullDate' }}</span>
+
+    <div class="dash-header__title">
+      <!-- original: "## Dashboard" -->
+      Dashboard
     </div>
-  </div>
 
-  <!-- Loading State -->
-  <div *ngIf="isLoading" class="loading">
-    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
-    <p>Loading dashboard data...</p>
-  </div>
+    <div class="dash-header__subtitle">
+      Welcome back! Here's what's happening with your business.
+    </div>
 
-  <!-- Stats Grid -->
-  <div *ngIf="!isLoading" class="stats-grid">
-    <mat-card class="stat-card" *ngFor="let stat of stats">
-      <mat-card-header>
-        <mat-card-title>{{ stat.title }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="stat-value">
-          {{ stat.title.includes('Revenue') ? ('$' + stat.value.toLocaleString()) : stat.value }}
-        </div>
-        <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
-        <p *ngIf="stat.trend" class="trend">{{ stat.trend }}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
+    <div class="dash-header__date">
+      {{ today | date:'EEEE, MMMM d, y' }}
+    </div>
+  </header>
 
-  <!-- Recent Appointments -->
-  <mat-card class="section-card">
-    <mat-card-header>
-      <mat-card-title><mat-icon>schedule</mat-icon> Recent Appointments</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div *ngIf="recentAppointments.length > 0; else noAppointments">
-        <div *ngFor="let apt of recentAppointments" class="list-item">
-          <div>
-            <p class="item-title">{{ apt.scheduled_date | date:'MMM d, yyyy' }}</p>
-            <p class="item-subtitle">{{ apt.scheduled_time }} • {{ apt.service_type }}</p>
+  <!-- ===== Row 1: KPI Tiles (Flexbox) ===== -->
+  <section class="kpi-row">
+
+    <article class="kpi kpi--customers">
+      <div class="kpi__title">
+        <span class="kpi__icon" aria-hidden="true"></span>
+        Total Customers
+      </div>
+      <div class="kpi__value">
+        {{ stats.customers | number }}
+      </div>
+      <div class="kpi__trend kpi__trend--positive">
+        12% increase
+      </div>
+    </article>
+
+    <article class="kpi kpi--workers">
+      <div class="kpi__title">
+        <span class="kpi__icon" aria-hidden="true"></span>
+        Active Workers
+      </div>
+      <div class="kpi__value">
+        {{ stats.workers | number }}
+      </div>
+      <div class="kpi__trend kpi__trend--positive">
+        2 new this week
+      </div>
+    </article>
+
+    <article class="kpi kpi--jobs">
+      <div class="kpi__title">
+        <span class="kpi__icon" aria-hidden="true"></span>
+        Today's Jobs
+      </div>
+      <div class="kpi__value">
+        {{ stats.todayAppointments | number }}
+      </div>
+      <!-- no trend text in your source; leaving empty on purpose -->
+    </article>
+
+    <article class="kpi kpi--revenue">
+      <div class="kpi__title">
+        <span class="kpi__icon" aria-hidden="true"></span>
+        Monthly Revenue
+      </div>
+      <div class="kpi__value">
+        {{ stats.monthlyRevenue | currency:'USD' }}
+      </div>
+      <div class="kpi__trend kpi__trend--positive">
+        8% vs last month
+      </div>
+    </article>
+
+  </section>
+
+  <!-- ===== Row 2: Panels ===== -->
+  <section class="panel-row">
+
+    <!-- Recent Appointments -->
+    <article class="panel panel--appointments">
+      <div class="panel__title">
+        <span class="panel__icon" aria-hidden="true"></span>
+        Recent Appointments
+      </div>
+
+      <!-- Example item wrappers; keep your bindings exactly -->
+      <div class="list">
+        <!--
+          If you already have *ngFor, keep it:
+          -->
+        <div class="list__item" *ngFor="let a of recentAppointments">
+        
+          <div class="list__item">
+            <div class="list__line">
+              <span class="list__date">{{ a?.scheduled_date | date:'MMM d, y' }}</span>
+              <span class="list__time">• {{ a?.scheduled_time }}</span>
+            </div>
+            <div class="list__sub">
+              {{ a?.service_type }}
+            </div>
+            <div class="list__status">
+              <span class="chip" [ngClass]="(a?.status || '').toLowerCase()">{{ a?.status }}</span>
+            </div>
           </div>
-          <span class="status" [ngClass]="getStatusColor(apt.status)">{{ apt.status }}</span>
+        </div>
+
+        <!-- Empty state (keep as-is) -->
+        <div class="list__empty">
+          No appointments scheduled
         </div>
       </div>
-      <ng-template #noAppointments>
-        <p class="empty-state">No appointments scheduled</p>
-      </ng-template>
-    </mat-card-content>
-  </mat-card>
+    </article>
 
-  <!-- Recent Customers -->
-  <mat-card class="section-card">
-    <mat-card-header>
-      <mat-card-title><mat-icon>group</mat-icon> Recent Customers</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div *ngIf="recentCustomers.length > 0; else noCustomers">
-        <div *ngFor="let customer of recentCustomers" class="list-item">
-          <div>
-            <p class="item-title">{{ customer.first_name }} {{ customer.last_name }}</p>
-            <p class="item-subtitle"><mat-icon>location_on</mat-icon> {{ customer.city }}, {{ customer.state }}</p>
+    <!-- Recent Customers -->
+    <article class="panel panel--customers">
+      <div class="panel__title">
+        <span class="panel__icon" aria-hidden="true"></span>
+        Recent Customers
+      </div>
+
+      <div class="list">
+       <div class="list__item" *ngFor="let c of recentCustomers"> 
+        <div class="list__item">
+          <div class="list__line">
+            <strong>{{ c?.first_name }}</strong> {{ c?.last_name }}
           </div>
-          <span class="status" [ngClass]="customer.status === 'active' ? 'active' : 'inactive'">{{ customer.status }}</span>
+          <div class="list__sub">
+            {{ c?.city }}, {{ c?.state }}
+          </div>
+          <div class="list__status">
+            <span class="chip" [ngClass]="(c?.status || '').toLowerCase()">{{ c?.status }}</span>
+          </div>
+          </div>
+        </div>
+
+        <div class="list__empty">
+          No customers yet
         </div>
       </div>
-      <ng-template #noCustomers>
-        <p class="empty-state">No customers yet</p>
-      </ng-template>
-    </mat-card-content>
-  </mat-card>
-</div>
+    </article>
+
+  </section>
+
+  <!-- ===== Row 3: Bottom Tiles ===== -->
+  <section class="bottom-row">
+
+    <article class="tile tile--completed">
+      <div class="tile__title">
+        <span class="tile__icon" aria-hidden="true"></span>
+        Completed Jobs
+      </div>
+      <div class="tile__value">{{ stats.completedJobs | number }}</div>
+      <div class="tile__sub">Total jobs completed</div>
+    </article>
+
+    <article class="tile tile--pending">
+      <div class="tile__title">
+        <span class="tile__icon" aria-hidden="true"></span>
+        Pending Invoices
+      </div>
+      <div class="tile__value">{{ stats.pendingInvoices | number }}</div>
+      <div class="tile__sub">Awaiting payment</div>
+    </article>
+
+    <article class="tile tile--growth">
+      <div class="tile__title">
+        <span class="tile__icon" aria-hidden="true"></span>
+        Business Growth
+      </div>
+      <div class="tile__value">+23%</div>
+      <div class="tile__sub">Growth this quarter</div>
+    </article>
+
+  </section>
+
+</section>

@@ -1,6 +1,6 @@
 // app/features/customer/customer.service.ts
 import { Injectable } from '@angular/core';
-import { ReviewItem } from '../../shared/models/review-item';
+import { ReviewItem } from '../../../shared/models/review-item';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {

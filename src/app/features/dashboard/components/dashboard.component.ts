@@ -1,51 +1,62 @@
+// src/app/features/dashboard/dashboard.component.ts
 import { Component, OnInit } from '@angular/core';
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { DashboardService, DashboardStats } from '@domain/dashboard/dashboard.service';
+// If your service also exports a DashboardOverview interface, you can import it too.
+// import { DashboardOverview } from './dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-
 export class DashboardComponent implements OnInit {
-  today = new Date();
+  // --- Template bindings the HTML expects ---
   isLoading = true;
+  today = new Date();
 
-  stats = [
-    { title: 'Total Customers', value: 0, icon: 'group', trend: '12% increase' },
-    { title: 'Active Workers', value: 0, icon: 'person', trend: '2 new this week' },
-    { title: "Today's Jobs", value: 0, icon: 'event' },
-    { title: 'Monthly Revenue', value: 0, icon: 'attach_money', trend: '8% vs last month' }
-  ];
+  stats: DashboardStats = {
+    customers: 0,
+    workers: 0,
+    todayAppointments: 0,
+    monthlyRevenue: 0,
+    completedJobs: 0,
+    pendingInvoices: 0
+  };
 
   recentAppointments: any[] = [];
   recentCustomers: any[] = [];
 
-  ngOnInit() {
-    setTimeout(() => {
-      this.isLoading = false;
-      // Mock data for now
-      this.stats[0].value = 120;
-      this.stats[1].value = 15;
-      this.stats[2].value = 8;
-      this.stats[3].value = 4500;
+  constructor(private readonly dashboardSvc: DashboardService) {}
 
-      this.recentAppointments = [
-        { scheduled_date: new Date(), scheduled_time: '10:00 AM', service_type: 'Yard Cleaning', status: 'scheduled' }
-      ];
-      this.recentCustomers = [
-        { first_name: 'John', last_name: 'Doe', city: 'Atlanta', state: 'GA', status: 'active' }
-      ];
-    }, 1500);
+  async ngOnInit(): Promise<void> {
+    await this.loadOverview();
   }
 
-  getStatusColor(status: string) {
+  // Loads the complete overview (stats + recent lists) via the service
+  private async loadOverview(): Promise<void> {
+    this.isLoading = true;
+    try {
+      const { stats, recentAppointments, recentCustomers } =
+        await this.dashboardSvc.getOverview();
+
+      this.stats = stats;
+      this.recentAppointments = recentAppointments;
+      this.recentCustomers = recentCustomers;
+    } catch (err) {
+      console.error('Failed to load dashboard overview', err);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  // Status -> CSS class used by chips in the template
+  getStatusClass(status: string): string {
     switch (status) {
-      case 'scheduled': return 'blue';
-      case 'in_progress': return 'yellow';
-      case 'completed': return 'green';
-      case 'cancelled': return 'red';
-      default: return 'gray';
+      case 'scheduled':   return 'chip-blue';
+      case 'in_progress': return 'chip-amber';
+      case 'completed':   return 'chip-green';
+      case 'cancelled':   return 'chip-red';
+      default:            return 'chip-gray';
     }
   }
 }

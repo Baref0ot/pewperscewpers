@@ -1,7 +1,7 @@
 // app/features/landing/entities-api.service.ts
 import { Injectable, inject } from '@angular/core';
 import { ServiceService } from '../services/service.service';
-import { CustomerService } from '../customers/customer.service';
+import { CustomerService } from '../customers/marketing/customer.service';
 import { LandingService } from './landing.service';
 
 // Re-export your existing models so LandingComponent's imports still work

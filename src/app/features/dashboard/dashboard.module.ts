@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from "@angular/material/icon";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatCardModule } from '@angular/material/card';
+import { SharedModule } from '@shared/shared.module';
 
 
 
@@ -19,7 +20,8 @@ import { MatCardModule } from '@angular/material/card';
     RouterModule.forChild([{ path: '', component: DashboardComponent }]),
     MatIconModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    SharedModule
 ]
 })
 export class DashboardModule { }
